@@ -807,7 +807,9 @@ def _build_child_row_status(row_values: tuple, header_index_map: dict[str, int],
         if prior_date is not None and later_date is not None and later_date < prior_date:
             issues.append("later dose earlier than prior dose")
         if prior_date is not None and later_date is not None and 0 <= (later_date - prior_date).days < MIN_DOSE_INTERVAL_DAYS:
-            issues.append(f"dose interval < {MIN_DOSE_INTERVAL_DAYS} days")
+            prior_label = prior_source_aliases[0].split()[0]
+            later_label = prior_label[:-1] + str(int(prior_label[-1]) + 1)
+            issues.append(f"dose interval < {MIN_DOSE_INTERVAL_DAYS} days ({prior_label} to {later_label})")
         if later_date is not None and prior_source == "NOT RECEIVED YET":
             issues.append("later dose with prior not received")
 

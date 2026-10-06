@@ -19,6 +19,7 @@ def _parse_clean_output(clean_output: str) -> dict[str, int]:
         "dob_after_first_visit": r"DOB later than first_visit_date:\s*(\d+)",
         "later_before_prior": r"later dose earlier than prior dose:\s*(\d+)",
         "later_while_prior_not_received": r"later dose with prior dose not received yet:\s*(\d+)",
+        "interval_under_min_days": r"interval between doses < 28 days[^:\n]*:\s*(\d+)",
         "pw_code_missing": r"pw_code missing:\s*(\d+)",
         "pw_code_duplicate_values": r"duplicate pw_code values:\s*(\d+)",
         "td2_earlier_than_td1": r"Td2 earlier than Td1:\s*(\d+)",
@@ -52,6 +53,7 @@ def _show_verification_dashboard(metrics: dict[str, int]) -> None:
         {"Check": "DOB later than first visit", "Count": metrics.get("dob_after_first_visit", 0), "Status": _status_label(metrics.get("dob_after_first_visit", 0))},
         {"Check": "later dose earlier than prior", "Count": metrics.get("later_before_prior", 0), "Status": _status_label(metrics.get("later_before_prior", 0))},
         {"Check": "later dose with prior not received", "Count": metrics.get("later_while_prior_not_received", 0), "Status": _status_label(metrics.get("later_while_prior_not_received", 0))},
+        {"Check": "dose interval < 28 days (OPV/Penta/MMR)", "Count": metrics.get("interval_under_min_days", 0), "Status": _status_label(metrics.get("interval_under_min_days", 0))},
     ])
 
     pw_df = pd.DataFrame([
